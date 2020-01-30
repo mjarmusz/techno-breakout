@@ -1,0 +1,97 @@
+/*
+	canvas-events.css 
+
+    Color Scheme:  https://coolors.co/2a2d34-077187-009ddc-f26430-f5e0b7
+*/
+
+/* -------------------------------------------------------------- */
+/* Fonts */
+
+/* find fonts that you like from https://www.google.com/fonts/ and include them here*/
+@import url(https://fonts.googleapis.com/css?family=Orbitron);
+@import url(https://fonts.googleapis.com/css?family=Special+Elite);
+@import url('https://fonts.googleapis.com/css?family=Saira+Extra+Condensed');
+
+/* -------------------------------------------------------------- */
+/* Framing Styles */
+
+body {
+   
+    /* color */
+    color: #56351E; 
+    background-image: url("https://external-preview.redd.it/ZOwIIZMuA994s9rd6qIQASJ640dnyNZCsp0Xy7w5r5U.jpg?auto=webp&s=d6cbdac8fef75e02f84855354f2d488b6540e078");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+    
+
+h1 {
+    color: #AE00FF; 
+    text-shadow: 2px 2px #FF60FF;
+    letter-spacing: 30px;
+    font-family: 'Orbitron', sans-serif; 
+}
+
+h3 {
+    color: #50E500; 
+    text-shadow: 1px 1px #FFF844;
+    letter-spacing: 2px;
+    font-family: 'Saira Extra Condensed', sans-serif;
+   
+}
+a {
+    color: #F26430; 
+    font-family: 'Special Elite'; 
+    
+}
+/* -------------------------------------------------------------- */
+/* Front Workaround -- Need to use fonts on the page to use on Canvas */
+
+#fontFix {
+    visibility: hidden;	   /* hide this section */
+}
+
+.font-Orbitron {
+    font-family: 'Orbitron', sans-serif; 
+}
+
+.font-Special-Elite {
+    font-family: 'Special Elite'; 
+}
+
+
+/* -------------------------------------------------------------- */
+/* Canvas Styles */
+
+#myCanvas {
+    border: 1px solid #OOO;
+    margin-top:  40px;
+
+    /* add a shadow */	
+    -moz-box-shadow: 10px 10px 25px rgba(255,0,230,0.9);  	
+    -webkit-box-shadow: 10px 10px 25px rgba(255,0,230,0.9);  	
+    box-shadow: 10px 10px 25px rgba(255,0,230,0.9); 
+    
+}
+
+/* -------------------------------------------------------------- */
+/* Alignment Rules */
+
+.center-text {
+    text-align: center;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,439 @@
+Canvas Events Keyboard Notes - v3.1 10.20.18
+
+---------------------------------------------------------------------------
+1.0  Canvas Events Project Folder
+---------------------------------------------------------------------------
+
+This is an example project folder for understanding and using events.
+
+    canvas-events.html 
+    css/canvas-events.css 
+    js/canvas-events.js
+    canvas-events-notes.txt
+
+We will walk through setting up event handlers and experiment with events related to interactions from the Mouse, the Keyboard and HTML objects (buttons).
+
+1.1  Introduction to Events
+---------------------------------------------------------------------------
+
+The browser can capture multiple events:
+
+- mouse events:  location; in and out; click
+- keyboard events:  key press
+- object loading events
+- ....
+
+See:  http://www.w3schools.com/jsref/dom_obj_event.asp
+
+To capture these events, the browser allows us to listen for events and then calling a function when an event occurs and passing the function an object for the event.
+
+See:  http://www.w3schools.com/jsref/met_document_addeventlistener.asp
+
+To listen for events we need to add an event listener to our JS code:
+
+    object.addEventListener( event, myEventFunction, useCapture );
+
+And then also add an associated event handler function() to be called when the event occurs.
+
+    function myEventHandlerFunction( e ) {
+
+        ...handling it...
+
+    }
+
+This function accepts the parameter "e" which the event object.  The event object provides us access to what occurred.
+
+
+1.2  Scaffolding for Events
+---------------------------------------------------------------------------
+
+The building block for events are:
+
+(1) what are we listening for?
+(2) what object are we listening on?
+(3) what function are we going to call when the event occurs?
+
+It is good practice to setup the following basic scaffolding to ensure that your events are listened for, heard and action is taken. 
+
+Step 1: Add the event listener
+
+    //-----------------------------------------------------------
+    //event listeners
+    object.addEventListener( "event", eventFunction );    
+
+
+Go here to find the "event" you want to listen for 
+- http://www.w3schools.com/jsref/dom_obj_event.asp
+
+
+Step 2:  Setup the function that gets called
+
+    //-----------------------------------------------------------
+    //get the mouse coordinates
+    function eventFunction( e ) {    
+
+        console.log( "eventFunction()" );
+        
+        //event specific code goes here
+        
+    } //eventFunction()
+
+We should always test that this works by activating the event and then checking the console to see of the eventFunction() has been called.
+
+Go here to find the attributed of the event you want to listen for 
+- http://www.w3schools.com/jsref/dom_obj_event.asp
+
+
+1.3  Event Resources
+---------------------------------------------------------------------------
+
+Here are some resources to help with events:
+
+http://www.w3schools.com/jsref/dom_obj_event.asp
+
+http://www.w3schools.com/jsref/met_document_addeventlistener.asp
+
+* For more on "Event Capture and Bubbling"  see:
+
+http://catcode.com/domcontent/events/capture.html
+http://stackoverflow.com/questions/4616694/what-is-event-bubbling-and-capturing
+
+---------------------------------------------------------------------------
+2.0  Key Events
+---------------------------------------------------------------------------
+
+To explore key events we going to use a simple example of drawing a single box. The box has a specific size and color and is drawn in the center of the canvas.
+
+We will then explore how to:
+
+* Move the box based on keyboard keys
+
+    A to go Left
+    D to go Right
+    S to go Down
+    W to go Up
+    
+Setup:
+
+For key events we are going to switch to use a box.  So we need variables for box - X, Y, Size, Color; and we are going to move the box so we need - Speed.
+
+And we need a function to draw a box.
+
+2.1  Setup 
+---------------------------------------------------------------------------
+
+For this key event exercise we are going to switch to use a box.  So we need variables that define our box: 
+
+    - X, Y, Size, Color
+
+And we are going to move the box so we need a variable for movement:
+
+     - Speed
+
+Our program is setup with the following:
+
+    canvasApp() {
+
+        getRandom( min, max )
+            - utility function to get a random number between a min and max
+
+        setup canvas variables
+        
+        setup box variables 
+            - X, Y, Size, Color, Speed
+
+        fuction drawBox()
+            - draw the box based on the parameters
+        
+        function clearCanvas()
+            - fill the canvas with the input parameter canvasColor
+
+        function drawCanvas() 
+            - clear the canvas 
+            - draw the box
+
+        - call drawCanvas()
+    
+    }
+
+
+2.2  Keyboard Event 
+---------------------------------------------------------------------------
+
+To be able to move the box based on the keyboard we are going to need to setup an event.
+
+To get started lets go through the building blocks for events:
+
+(1) What event are we listening for?
+
+Lets look and see what type of events are related to the keyboard:
+
+    http://www.w3schools.com/jsref/dom_obj_event.asp
+
+Looks like we may be able to use "onkeypress" as our event
+
+    http://www.w3schools.com/jsref/event_onkeypress.asp
+
+Upon further inspection, it looks like onkeypress suggests we use "onkeydown" - 
+
+    http://www.w3schools.com/jsref/event_onkeydown.asp
+
+Our event listener starts to look like:
+
+    object.addEventListener( "keydown", eventFunction );    
+
+(2) Where do we listen for the event?  Or what object to we listen for the event?
+
+We want to listen to the keyboard when the "window" is active.
+
+    window.addEventListener( "keydown", eventFunction );
+
+(3) Now we need a function to call.
+
+Following our convent we will call it eventKeyDown()
+
+    window.addEventListener( "keydown", eventKeyDown );
+
+Ok.  Lets go setup the event scaffolding.
+
+2.2.1  Keyboard Event - Scaffolding
+---------------------------------------------------------------------------
+
+Lets setup the basic scaffolding for our event and test that its all hooked up and working.
+
+(1)  Add the event listener
+
+    window.addEventListener( "keydown", eventKeyDown );
+
+This should generate a JS error in our console!  Because we have not setup the function yet.
+
+(2)  Add the event function
+
+    function eventKeyDown( e ) {
+
+        console.log( "eventKeyDown()" );
+        
+    }//eventKeyDown()
+
+Remember, event handler functions all get passed a parameter which is the event object.  We will call that parameter "e" for "event".
+
+Our parameter "e" is an object that has properties and methods associated with the event.  This is where we will find the key that gets pressed.    
+
+(3) Test it
+
+Save, reload and check the console.
+
+When you press a key you should see a console message:
+
+>eventKeyDown()
+
+Ok. Now we are ready to move onto getting the key that is pressed and seeing how we can use that to move our box.
+
+2.2.2  The Key - getting the pressed key
+---------------------------------------------------------------------------
+
+With our event scaffolding setup, we are capturing the key presses. Now we need to figure out how to, or where to, get access to something defines the key that is being pressed.
+
+(A) Getting the key press
+
+We are looking for something that provides the key that is pressed.  
+
+We can look here to see what properties are available to us in the Keyboard Object (scroll down to the "KeyboardEvent Object" section).
+
+    http://www.w3schools.com/jsref/dom_obj_event.asp
+
+Looks like we can use "keycode".
+
+Ok lets try these.  To see what values these produce lets print this value in our console message.  We can reference these values from our "e" object.
+
+    console.log( "eventKeyDown():" + e.keyCode );
+        
+Save, reload, press the keyboard and check the console.  Looks great.
+
+But it returns a number?  What is this number?
+
+(B) Converting the key pressed
+
+How can we convert the key code to the actual letter or number?
+
+There's an app for that!  No, but there is a method.
+
+    String.fromCharCode( e.keyCode )
+    
+Lets print that out:
+
+    console.log( "eventKeyDown():" + String.fromCharCode(e.keyCode) );
+
+Works.  Returns both upper and lower case.  Cool.
+
+
+2.2.3  Using the key pressed to move the box
+---------------------------------------------------------------------------
+
+Ok. So now we have the key.  Now lets examine how we can make the keys A S D W move the box.
+
+    A to go Left
+    D to go Right
+    S to go Down
+    W to go Up
+    
+How do we make the box move in these directions? Right, we change it's X and Y values.  
+
+    changing X moves Left and Right
+    changing Y moves Up and Down
+
+So we can use our boxSpeed variable to change boxX and boxY for movement:
+
+    to go Left:     change box.x in a negative direction
+    to go Right:    change box.x in a positive direction
+    
+    to go Down:     change box.y in a positive direction
+    to go Up:       change box.y in a negative direction
+    
+Cool. So we evaluate each key press and then adjust box.x and box.y appropriately.
+
+(A) Lets setup a variable to hold the keyCode
+
+    var keyPressed = String.fromCharCode( e.keyCode );
+
+    console.log( keyPressed );
+
+(B) Now lets create some conditionals to move our box.
+
+    if ( keyPressed == "A" ) {
+        box.x -= box.speed; //move left	
+    }
+    
+And now lets repeat that for other keys:
+    
+    D to go Right
+    S to go Down
+    W to go Up
+
+
+2.2.4  Finished Code
+---------------------------------------------------------------------------
+
+With this exercise we have demonstrated how to:
+
+- add a keyboard event listener
+- create a function to handle key presses
+- move an object based on key press
+
+Our example is a bit simple.  And could use a little cleaning up.  
+
+Final code looks something like:
+
+    //-----------------------------------------------------------
+    //move the box based on key pressed
+    function moveBox( keyPressed ) {
+        
+        //move the box
+        if ( keyPressed == "A" ) {
+            box.x -= box.speed;
+        } else  if ( keyPressed == "D" ) {
+            box.x += box.speed;
+        } else  if ( keyPressed == "S" ) {
+            box.y += box.speed;
+        } else  if ( keyPressed == "W" ) {
+            box.y -= box.speed;
+        } 
+        
+        //draw the canvas
+        drawCanvas();
+        
+    } //moveBox()    
+
+    //-----------------------------------------------------------
+    //listen for key entry and call eventKeyPressed
+    window.addEventListener( "keydown", eventKeyPressed );
+
+    //-----------------------------------------------------------
+    //event handler for keydown
+    function eventKeyDown( e ) {
+        
+        var keyPressed = String.fromCharCode(e.keyCode);
+        console.log( keyPressed );
+        
+        //move the box based on the key press        
+        moveBox( keyPressed );
+        
+    } //eventKeyDown()
+
+    
+---------------------------------------------------------------------------
+3.0  LAB - Keyboard Events
+---------------------------------------------------------------------------
+
+Lets expand this.
+
+Lab: Keyboard Events
+
+In this Lab you will extend our box movement with keyboard events project to do ALL of the following - 
+
+Assignment:  You MUST do all parts:
+
+(0) Move the box up and down
+
+    Use these keys:
+
+    - A to move Left
+    - D to move Right
+    - W to move Up
+    - S to move Down
+
+(1) Move the box diagonally
+
+    Use these keys:
+
+    - Q to move up and left
+    - E to move up and right
+    - Z to move down and left
+    - C to move down and right
+
+(2) Change the box size
+
+    - setup variables for a Max and Min box size
+    - setup a variable for a factor to increase the size by
+
+    Use these keys:
+
+    - I to increase box size
+    - K to decrease box size
+
+(3) Change the speed that the box moves
+
+    - set variables for a Max and Min box size
+    - setup a variable for a factor to increase or decrease the speed by
+
+    Use these keys:
+
+    - J to increase speed
+    - L to decrease speed
+
+(4) Keep the box inside the boundaries of the canvas
+
+    - Modify all box movement so that the box can not go outside of the boundaries of the canvas.
+
+(5) Add content to the HTML page that describes what each key does
+
+
+Grading: You will be scored on the following:
+
+Valid HTML, CSS, and JavaScript that conforms to best practices (5)
+Proper use of event handlers (5)
+Proper movement of the box (5)
+Proper changing of the box speed (5)
+Proper changing of the box size (5)
+Proper restriction of the box in the canvas boundaries (5)
+
+Don’t be afraid to go beyond the basic requirements of the assignment if you wish!
+
+Submit:
+
+Upload your assignment to the course sever.  Test it.  And submit a link to your tested project on Sakai.
+
+
+
+
+
